@@ -32,7 +32,7 @@ function realizarBusqueda() {
 }
 
 function cargarArchivoDesdeCSV(medidaBuscada) {
-    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQkXXXXXX/pub?gid=0&single=true&output=csv')
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQGt7RPbl789zJUofpKysoq2VWVbPm7skhwFHAgNVmtaeu-kNcTnpwdIIu1MgEh4w/pub?gid=1564158417&single=true&output=csv')
         .then(response => response.text())
         .then(csvText => {
             const rows = Papa.parse(csvText, { header: true }).data;
