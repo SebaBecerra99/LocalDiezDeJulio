@@ -31,24 +31,20 @@ function realizarBusqueda() {
     cargarArchivo(medidaBuscada);
 }
 
-function cargarArchivo(medidaBuscada) {
-    fetch('files/LISTA DE PRECIOS WEB.xlsx')
-        .then(response => response.arrayBuffer())
-        .then(data => {
-            const workbook = XLSX.read(data, { type: 'array' });
-            const worksheet = workbook.Sheets["Hoja1"];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
+function cargarArchivoDesdeCSV(medidaBuscada) {
+    fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQkXXXXXX/pub?gid=0&single=true&output=csv')
+        .then(response => response.text())
+        .then(csvText => {
+            const rows = Papa.parse(csvText, { header: true }).data; // Usa PapaParse para convertir CSV a JSON
             const variantes = GenerarVariantesMedida(medidaBuscada);
-
-            const resultados = jsonData.filter(row =>
-                variantes.some(vari => row["MEDIDA"] && row["MEDIDA"].toString().toUpperCase().includes(vari.toUpperCase()))
+            const resultados = rows.filter(row =>
+                variantes.some(vari => row["MEDIDA"] && row["MEDIDA"].toUpperCase().includes(vari.toUpperCase()))
             );
-
             mostrarResultados(resultados, medidaBuscada);
         })
-        .catch(error => console.error('Error al cargar el archivo:', error));
+        .catch(error => console.error('Error al cargar los datos:', error));
 }
+
 
 function GenerarVariantesMedida(medida) {
     medida = medida.toString().trim();
