@@ -28,14 +28,14 @@ function realizarBusqueda() {
         alert("Por favor, ingresa una medida válida.");
         return;
     }
-    cargarArchivo(medidaBuscada);
+    cargarArchivoDesdeCSV(medidaBuscada);
 }
 
 function cargarArchivoDesdeCSV(medidaBuscada) {
     fetch('https://docs.google.com/spreadsheets/d/e/2PACX-1vQkXXXXXX/pub?gid=0&single=true&output=csv')
         .then(response => response.text())
         .then(csvText => {
-            const rows = Papa.parse(csvText, { header: true }).data; // Usa PapaParse para convertir CSV a JSON
+            const rows = Papa.parse(csvText, { header: true }).data;
             const variantes = GenerarVariantesMedida(medidaBuscada);
             const resultados = rows.filter(row =>
                 variantes.some(vari => row["MEDIDA"] && row["MEDIDA"].toUpperCase().includes(vari.toUpperCase()))
